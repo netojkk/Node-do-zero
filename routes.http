@@ -1,1 +1,26 @@
 POST http://localhost:3333/videos
+Content-Type: application/json
+
+{
+    "title": "Tutorial de como passar no Estágio",
+    "description": "Sendo assim como eu, o estagiário mais dedicado!",
+    "duration": 190
+}
+
+
+
+###
+
+GET  http://localhost:3333/videos
+
+
+###
+
+PUT http://localhost:3333/videos
+Content-Type: application/json
+
+{
+    "title": "Tutorial de como passar no Estágio",
+    "description": "Sendo assim como eu, o estagiário mais dedicado!",
+    "duration": 190
+}

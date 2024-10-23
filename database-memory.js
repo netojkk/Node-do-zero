@@ -4,13 +4,22 @@ export class DatabaseMemory {
     #videos = new Map()
     
     list() {
-        return this.#videos.values()
+        //entries serve assim como o value, mas ele separa o id do objeto dos videos em 2 arrays dentro do array principal
+        return Array.from(this.#videos.entries()).map((videoArray) => {
+            const IdVideo = videoArray[0]
+            const dadosVideo = videoArray[1]
+
+            return {
+                //esses 3 pontos são o spreadOperator
+                id,
+                ...data
+            }
+        })
 
     }
 
     create(video){
-        //Criando um id unico universal para cada video criado, com a ajuda do randomUUID (biblioteca)
-        const idVideo = randomUUID
+        const idVideo = randomUUID()
 
 
         this.#videos.set(idVideo, video)
@@ -18,7 +27,7 @@ export class DatabaseMemory {
     update(id, video){
         this.#videos.set(id, video)
     }
-    create(id){
+    delete(id){
         this.#videos.delete(id)
     }
 }

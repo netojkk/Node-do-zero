@@ -1,52 +1,46 @@
-// Criando um servidor puramente com o NODE 
-
-/* import {createServer} from 'node:http'
-
- const servidor = createServer((request, response) => {
-    
-     response.write("Hello World!")
-     return response.end()
-
- })
-
- servidor.listen(3333) */
-
-// ===============================================================================
-
+import { fastify } from "fastify";
 import { DatabaseMemory } from "./database-memory.js";
 
-// Criando um servidor utilizando o micro-framework fastify
-
-import { fastify } from "fastify";
 
 const server = fastify()
 
-const database = new DatabaseMemory
+const database = new DatabaseMemory()
 
-// Criando a primeira rota, rota "nativa" apenas com (/)
+
 
 server.post('/videos',(request, reply) => {
+    const {title, description, duration} = request.body
+
     database.create({
-        title: 'Tutorial de como passar no Estágio',
-        description: 'Sendo assim como eu, o estagiário mais dedicado!',
-        duration: 260,
+        title,
+        description,
+        duration
     })
-    console.log(database.list(0))
     
-    //metodo .status serve para sinalizar se a requisição ocorreu bem ou não, e também detalha o porque de ter dado ou nao certo e o tipo do possivel erro. Nesse caso, utilizo o 201 que simboliza que algo foi criado!
     return reply.status(201).send()
 })
 
-/* Roteiro de revisao
+server.get('/videos', () => {
+    const videos = database.list()
 
-Metodos mais usadados: GET,POST,PUT,DELETE, PATCH
+    console.log(videos)
 
-*/
-server.post('/add_video', () => {
-    return 'Hello World!'
+    return videos
 })
-server.get('/node', () => {
-    return 'gostei do node'
+server.put('/videos/:id', (request) => {
+    const IdVideo = request.params.id
+
+    const {title, description, duration} = request.body
+
+    database.update(IdVideo, {
+        title,
+        description,
+        duration
+    })
+
+    return reply.status(204).send()
+
+    
 })
 
 server.listen({
